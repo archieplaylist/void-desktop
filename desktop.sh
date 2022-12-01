@@ -10,7 +10,7 @@ sudo xbps-install -Rsy dbus kde5 kde5-baseapps plasma{-disks,-firewall,-wayland-
 
 sudo xbps-install -Sy alsa{-utils,-firmware,-tools,-pipewire} apulse bluez-alsa ffmpeg alsa-plugins-ffmpeg pipewire pavucontrol
 
-sudo xbps-install -Rsy firefox neofetch vlc ntfs-3g
+sudo xbps-install -Rsy firefox neofetch vlc ntfs-3g nano kate
 
 ### pipewire alsa itegration
 sudo mkdir -p /etc/alsa/conf.d

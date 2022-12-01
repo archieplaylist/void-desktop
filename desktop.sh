@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+# set -e
 
 sudo xbps-install -Suvy
 

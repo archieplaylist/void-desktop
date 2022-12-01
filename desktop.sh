@@ -6,9 +6,9 @@ sudo xbps-install -Suvy
 
 sudo xbps-install -Sy void-repo-nonfree
 
-sudo xbps-install -Rsy dbus kde5 kde5-baseapps plasma{-disks,-firewall,-wayland-protocols,-systemmonitor} mesa-dri xdg-user-dirs xorg xorg-fonts xorg-server-xwayland autox elogind xf86-video-intel qt5-wayland
+sudo xbps-install -Rsy dbus kde5 kde5-baseapps plasma-disks plasma-firewall plasma-wayland-protocols plasma-systemmonitor mesa-dri xdg-user-dirs xorg xorg-fonts xorg-server-xwayland autox elogind xf86-video-intel qt5-wayland
 
-sudo xbps-install -Sy alsa{-utils,-firmware,-tools,-pipewire} apulse bluez-alsa ffmpeg alsa-plugins-ffmpeg pipewire pavucontrol
+sudo xbps-install -Sy alsa-utils alsa-firmware alsa-tools alsa-pipewire apulse bluez-alsa ffmpeg alsa-plugins-ffmpeg pipewire pavucontrol
 
 sudo xbps-install -Rsy firefox neofetch vlc ntfs-3g nano kate
 

@@ -12,7 +12,7 @@ sudo xbps-install -Sy alsa-utils alsa-firmware alsa-tools alsa-pipewire apulse b
 
 sudo xbps-install -Sy firefox neofetch vlc ntfs-3g nano noto-fonts-cjk flatpak
 
-sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+# sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 ### pipewire alsa itegration
 sudo mkdir -p /etc/alsa/conf.d

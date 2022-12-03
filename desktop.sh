@@ -12,7 +12,7 @@ sudo xbps-install -Sy dbus sddm kde5 kde5-baseapps plasma-disks plasma-firewall 
 sudo xbps-install -Sy alsa-utils alsa-firmware alsa-tools alsa-pipewire apulse bluez-alsa ffmpeg alsa-plugins-ffmpeg pipewire pavucontrol
 
 ### APP Install
-sudo xbps-install -Sy firefox neofetch vlc ntfs-3g nano noto-fonts-cjk flatpak bleachbit
+sudo xbps-install -Sy firefox neofetch vlc ntfs-3g nano noto-fonts-cjk flatpak bleachbit ark zip unzip unrar
 
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
@@ -28,11 +28,11 @@ sudo ln -s /usr/share/alsa/alsa.conf.d/50-pipewire.conf /etc/alsa/conf.d
 sudo ln -s /usr/share/alsa/alsa.conf.d/99-pipewire-default.conf /etc/alsa/conf.d
 
 ### general service
-sudo ln -s /etc/sv/NetworkManager /var/service
 sudo ln -s /etc/sv/alsa /var/service
 sudo ln -s /etc/sv/ntpd /var/service
 
 ### Display manager
+sudo ln -s /etc/sv/NetworkManager /etc/runit/runsvdir/default/
 sudo ln -s /etc/sv/sddm /etc/runit/runsvdir/default/
 sudo ln -s /etc/sv/dbus /etc/runit/runsvdir/default/
 

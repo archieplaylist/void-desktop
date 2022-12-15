@@ -114,7 +114,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
         if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
             echo -e "${LBLUE}Alright, I'll install base kde apps${NORMAL}"
             echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install kde5-baseapps -y
+            xbps-install kde5-baseapps xorg-minimal xdg-user-dirs xorg xorg-fonts xorg-server-xwayland mesa-dri xf86-video-intel qt5-wayland -y
             echo -e "----------------------------------------${NORMAL}"
         fi
 
@@ -133,7 +133,6 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
         if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
             echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install -y xorg-minimal xdg-user-dirs xorg xorg-fonts xorg-server-xwayland autox mesa-dri xf86-video-intel qt5-wayland
             xbps-install -y sddm ntp
             ln -s /etc/sv/ntpd /var/service
             ln -s /etc/sv/sddm /etc/runit/runsvdir/default
@@ -222,8 +221,9 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
         echo -e "${LBLUE}And finally I'll install XFCE(pkg)${NORMAL}"
         echo -e "${LMAGENTA}----------------------------------------"
-        xbps-install xfce4 -y
+        xbps-install xfce4 xorg-minimal xdg-user-dirs xorg xorg-fonts mesa-dri -y
         echo -e "----------------------------------------${NORMAL}"
+
     #========================================================
 
     #MATE
@@ -394,7 +394,7 @@ read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install -y firefox neofetch vlc ntfs-3g nano noto-fonts-cjk flatpak bleachbit ark zip unzip unrar
+    xbps-install -y firefox neofetch vlc ntfs-3g nano noto-fonts-cjk flatpak bleachbit zip unzip unrar
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     echo -e "----------------------------------------${NORMAL}"
 fi

@@ -221,7 +221,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
         echo -e "${LBLUE}And finally I'll install XFCE(pkg)${NORMAL}"
         echo -e "${LMAGENTA}----------------------------------------"
-        xbps-install xfce4 xorg-minimal xdg-user-dirs xorg xorg-fonts mesa-dri -y
+        xbps-install xfce4 engrampa gvfs thunar-archive-plugin thunar-media-tags-plugin xorg-minimal xdg-user-dirs xorg xorg-fonts mesa-dri -y
         echo -e "----------------------------------------${NORMAL}"
 
     #========================================================
@@ -394,7 +394,7 @@ read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install -y firefox neofetch vlc ntfs-3g nano noto-fonts-cjk flatpak bleachbit zip unzip unrar
+    xbps-install -y firefox neofetch vlc ntfs-3g nano noto-fonts-cjk flatpak bleachbit zip xz unzip unrar p7zip xtools 
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     echo -e "----------------------------------------${NORMAL}"
 fi

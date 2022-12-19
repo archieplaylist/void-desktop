@@ -125,7 +125,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
         if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
             echo -e "${LBLUE}Alright, I'll install base kde apps${NORMAL}"
             echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install kde5-baseapps xorg-minimal xdg-user-dirs xorg xorg-fonts xorg-server-xwayland mesa-dri xf86-video-intel qt5-wayland -y
+            xbps-install kde5-baseapps ark xorg-minimal xdg-user-dirs xorg xorg-fonts xorg-server-xwayland mesa-dri xf86-video-intel plasma-wayland-protocols qt5-wayland -y
             echo -e "----------------------------------------${NORMAL}"
         fi
 
@@ -135,7 +135,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
         if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
             echo -e "${LBLUE}Alright, I'll install base kde apps${NORMAL}"
             echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install -y plasma-disks plasma-firewall plasma-wayland-protocols plasma-systemmonitor ark zip unzip unrar
+            xbps-install -y plasma-disks plasma-firewall  plasma-systemmonitor 
             echo -e "----------------------------------------${NORMAL}"
         fi
 
@@ -405,9 +405,18 @@ read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install -y firefox ufetch vlc ntfs-3g nano noto-fonts-cjk flatpak bleachbit zip xz unzip unrar p7zip xtools 
+    xbps-install -y firefox ufetch vlc ntfs-3g nano noto-fonts-cjk flatpak bleachbit ufw zip xz unzip unrar p7zip xtools 
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     echo -e "----------------------------------------${NORMAL}"
+
+    echo -e "${YELLOW}Do you want to put ufw in autorun? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+    read
+
+    if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+        echo -e "${LMAGENTA}----------------------------------------"
+        ln -s /etc/sv/ufw /var/service/
+        echo -e "----------------------------------------${NORMAL}"
+    fi
 fi
 #========================================================
 

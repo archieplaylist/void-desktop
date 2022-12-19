@@ -46,8 +46,8 @@ read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LMAGENTA}----------------------------------------"
-    # rm -r /etc/runit/runsvdir/default/dhcpcd
-    # rm -r /etc/runit/runsvdir/default/wpa_supplicant
+    rm -rf /etc/runit/runsvdir/default/dhcpcd
+    rm -rf /etc/runit/runsvdir/default/wpa_supplicant
     xbps-install NetworkManager -y
     ln -s /etc/sv/NetworkManager /etc/runit/runsvdir/default/
     echo -e "----------------------------------------${NORMAL}"
@@ -221,7 +221,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
         echo -e "${LBLUE}And finally I'll install XFCE(pkg)${NORMAL}"
         echo -e "${LMAGENTA}----------------------------------------"
-        xbps-install xfce4 xfce4-whiskermenu-plugin xfce4-clipman-plugin xfce4-pulseaudio-plugin engrampa gvfs lightdm-gtk3-greeter thunar-archive-plugin thunar-media-tags-plugin xorg-minimal xdg-user-dirs xorg xorg-fonts mesa-dri -y
+        xbps-install xfce4 xfce4-whiskermenu-plugin xfce4-clipman-plugin xfce4-pulseaudio-plugin network-manager-applet engrampa gvfs lightdm-gtk3-greeter thunar-archive-plugin thunar-media-tags-plugin xorg-minimal xdg-user-dirs xorg xorg-fonts mesa-dri -y
         echo -e "----------------------------------------${NORMAL}"
 
     #========================================================

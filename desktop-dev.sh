@@ -39,6 +39,17 @@ if [[ $REPLY = "no" || $REPLY = "n" || $REPLY = "N" || $REPLY = "No" || $REPLY =
 fi
 #========================================================
 
+#Swappiness
+#========================================================
+echo -e "${YELLOW}Do you want to set swappines to 10? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+read
+if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+    echo -e "${LMAGENTA}----------------------------------------"
+    sysctl vm.swappiness=10
+    echo -e "----------------------------------------${NORMAL}"
+fi
+#========================================================
+
 #NetworkManager
 #========================================================
 echo -e "${YELLOW}Do you want to install NetworkManager? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"

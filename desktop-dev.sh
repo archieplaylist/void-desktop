@@ -111,7 +111,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
     read
 
     #KDE5
-    #========================================================
+    #=========================================================
     if [[ $REPLY = "kde5" ]]; then
 
         echo -e "\n${LBLUE}So, I'll install KDE for you :3${NORMAL}"

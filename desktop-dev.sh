@@ -107,7 +107,7 @@ read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
 
-    echo -e "${YELLOW}Which DE you want to install ${LMAGENTA}(kde5, gnome, xfce4, mate, lxde, lxqt)${NORMAL}${YELLOW}?${NORMAL}"
+    echo -e "${YELLOW}Which DE you want to install ${LMAGENTA}(kde5, gnome, xfce4, mate, lxde, lxqt, openbox)${NORMAL}${YELLOW}?${NORMAL}"
     read
 
     #KDE5
@@ -329,6 +329,45 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
         xbps-install lxqt -y
         echo -e "----------------------------------------${NORMAL}"
     #========================================================
+
+    #OPENBOX
+    #========================================================
+    elif [[ $REPLY = "openbox" ]]; then
+        echo -e "\n${LBLUE}So, now I'll install OPENBOX :3${NORMAL}\n"
+
+        echo -e "${YELLOW}Do you want to install lxdm? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+        read
+
+        if [[ $REPLY = "no" || $REPLY = "n" || $REPLY = "N" || $REPLY = "No" ]]; then
+            echo -e "${LYELLOW}If you want to install any DM, you can enter the exact package name (or enter 'NO' for skip)"
+            echo -e "You can find your DM by 'xbps-query -Rs <pkg name>' ;)${NORMAL}"
+            read
+
+            if [[ $REPLY != "NO" ]]; then
+                echo -e "${LBLUE}So, I'll install ${REPLY} ${NORMAL}"
+                echo -e "${LMAGENTA}----------------------------------------"
+                xbps-install $REPLY -y
+                ln -s /etc/sv/$REPLY /etc/runit/runsvdir/default/
+                echo -e "----------------------------------------${NORMAL}"
+            fi
+        else
+            echo -e "${LBLUE}I'll install LXDM${NORMAL}"
+            echo -e "${LMAGENTA}----------------------------------------"
+            xbps-install lxdm -y
+            ln -s /etc/sv/lxdm /etc/runit/runsvdir/default/
+            echo -e "----------------------------------------${NORMAL}"
+
+        fi
+
+        echo -e "${LBLUE}Now I'll install OPENBOX(pkg)"
+        echo -e "${LMAGENTA}----------------------------------------"
+        xbps-install openbox xorg-minimal xdg-user-dirs xorg xorg-fonts xfce4-terminal lxappearance-obconf obmenu-generator	 pcmanfm nitrogen tint2 -y
+        git clone https://github.com/ArchieTani/openbox-theme-collections /home/mario/.themes
+        git clone https://github.com/ArchieTani/tint2-theme-collections /home/mario/.config/tint2 --depth 1
+        cp wm/autostart /home/mario/.config/openbox/
+        echo -e "----------------------------------------${NORMAL}"
+    #========================================================
+
 
     else
         echo -e "${RED} I don't know what is it :("

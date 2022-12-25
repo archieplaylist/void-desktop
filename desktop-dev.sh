@@ -335,6 +335,14 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
     elif [[ $REPLY = "openbox" ]]; then
         echo -e "\n${LBLUE}So, now I'll install OPENBOX :3${NORMAL}\n"
 
+        echo -e "${LBLUE}Now I'll install OPENBOX(pkg)"
+        echo -e "${LMAGENTA}----------------------------------------"
+        xbps-install openbox xorg-minimal xdg-user-dirs xorg xorg-fonts xfce4-terminal lxappearance-obconf obmenu-generator	 pcmanfm nitrogen tint2 -y
+        git clone https://github.com/ArchieTani/openbox-theme-collections /home/mario/.themes
+        git clone https://github.com/ArchieTani/tint2-theme-collections /home/mario/.config/tint2 --depth 1
+        cp wm/autostart /home/mario/.config/openbox/
+        echo -e "----------------------------------------${NORMAL}"
+
         echo -e "${YELLOW}Do you want to install lxdm? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
         read
 
@@ -358,14 +366,6 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
             echo -e "----------------------------------------${NORMAL}"
 
         fi
-
-        echo -e "${LBLUE}Now I'll install OPENBOX(pkg)"
-        echo -e "${LMAGENTA}----------------------------------------"
-        xbps-install openbox xorg-minimal xdg-user-dirs xorg xorg-fonts xfce4-terminal lxappearance-obconf obmenu-generator	 pcmanfm nitrogen tint2 -y
-        git clone https://github.com/ArchieTani/openbox-theme-collections /home/mario/.themes
-        git clone https://github.com/ArchieTani/tint2-theme-collections /home/mario/.config/tint2 --depth 1
-        cp wm/autostart /home/mario/.config/openbox/
-        echo -e "----------------------------------------${NORMAL}"
     #========================================================
 
 

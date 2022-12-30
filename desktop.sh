@@ -383,7 +383,7 @@ read
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LBLUE}Now I'll install pipewire for you${NORMAL}"
     echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install -y alsa-utils alsa-firmware alsa-tools alsa-pipewire apulse bluez-alsa ffmpeg alsa-plugins-ffmpeg pipewire pavucontrol
+    xbps-install -y alsa-utils alsa-firmware alsa-pipewire apulse bluez-alsa ffmpeg alsa-plugins-ffmpeg pipewire pavucontrol
     ln -s /usr/share/applications/pipewire.desktop /etc/xdg/autostart/pipewire.desktop
     ln -s /usr/share/applications/pipewire-pulse.desktop /etc/xdg/autostart/pipewire-pulse.desktop
     mkdir -p /etc/alsa/conf.d

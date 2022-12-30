@@ -311,7 +311,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
         echo -e "${LBLUE}Now I'll install LXQT(pkg)"
         echo -e "${LMAGENTA}----------------------------------------"
-        xbps-install lxqt -y
+        xbps-install lxqt xorg-minimal xdg-user-dirs xdg-desktop-portal-lxqt xorg xorg-fonts -y
         echo -e "----------------------------------------${NORMAL}"
     #========================================================
 
@@ -429,7 +429,7 @@ read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install -y firefox ufetch vlc ntfs-3g nano noto-fonts-cjk flatpak bleachbit ufw zip xz unzip unrar p7zip xtools 
+    xbps-install -y firefox vlc ntfs-3g nano noto-fonts-cjk flatpak bleachbit ufw zip xz unzip unrar p7zip xtools 
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     echo -e "----------------------------------------${NORMAL}"
 

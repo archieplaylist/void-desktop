@@ -311,7 +311,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
         echo -e "${LBLUE}Now I'll install LXQT(pkg)"
         echo -e "${LMAGENTA}----------------------------------------"
-        xbps-install lxqt xorg-minimal xdg-user-dirs xdg-desktop-portal-lxqt xorg xorg-fonts -y
+        xbps-install lxqt xorg-minimal xdg-user-dirs xdg-desktop-portal-lxqt xorg xorg-fonts nm-tray -y
         echo -e "----------------------------------------${NORMAL}"
     #========================================================
 

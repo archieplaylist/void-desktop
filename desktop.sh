@@ -10,7 +10,7 @@ LYELLOW='\033[1;33m'
 LBLUE='\033[1;34m'
 LMAGENTA='\033[1;35m'
 
-if [[ `whoami` != "root" ]]; then
+if [[ $(whoami) != "root" ]]; then
     clear
     echo -e "${RED}You should execute this script as root user or via sudo <[*_*]>${NORMAL}"
     exit
@@ -30,10 +30,11 @@ if [[ $REPLY = "no" || $REPLY = "n" || $REPLY = "N" || $REPLY = "No" || $REPLY =
     read
 
     if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
-        echo -e "${LBLUE}So I'll update your installed xbps now${NORMAL}"
+        echo -e "${LBLUE}So I'll update your installed xbps now and install git${NORMAL}"
         echo -e "${LMAGENTA}----------------------------------------"
         xbps-install -Suy
         xbps-install -yu xbps
+        xbps-install git curl wget -y
         echo -e "----------------------------------------${NORMAL}"
     fi
 fi
@@ -46,6 +47,32 @@ read
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LMAGENTA}----------------------------------------"
     sysctl vm.swappiness=10
+    echo -e "----------------------------------------${NORMAL}"
+fi
+#========================================================
+
+#multilib repo
+#========================================================
+echo -e "${YELLOW}Do you want to install multilib repo? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+read
+
+if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+    echo -e "${LMAGENTA}----------------------------------------"
+    xbps-install void-repo-multilib -y
+    xbps-install -Syu
+    echo -e "----------------------------------------${NORMAL}"
+fi
+#========================================================
+
+#nonfree repo
+#========================================================
+echo -e "${YELLOW}Do you want to install nonfree repo? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+read
+
+if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+    echo -e "${LMAGENTA}----------------------------------------"
+    xbps-install void-repo-nonfree void-repo-multilib-nonfree -y
+    xbps-install -Syu
     echo -e "----------------------------------------${NORMAL}"
 fi
 #========================================================
@@ -92,12 +119,12 @@ read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
 
-    echo -e "${YELLOW}Which DE you want to install ${LMAGENTA}(kde5, gnome, xfce4, mate, lxde, lxqt, openbox)${NORMAL}${YELLOW}?${NORMAL}"
+    echo -e "${YELLOW}Which DE you want to install ${LMAGENTA}(plasma, gnome, xfce4, mate, lxde, lxqt, openbox)${NORMAL}${YELLOW}?${NORMAL}"
     read
 
-    #KDE5
+    #PLASMA
     #=========================================================
-    if [[ $REPLY = "kde5" ]]; then
+    if [[ $REPLY = "plasma" ]]; then
 
         echo -e "\n${LBLUE}So, I'll install KDE for you :3${NORMAL}"
         echo -e "${LMAGENTA}----------------------------------------"
@@ -110,7 +137,10 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
         if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
             echo -e "${LBLUE}Alright, I'll install base kde apps${NORMAL}"
             echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install kde5-baseapps ark xorg-minimal xdg-user-dirs xorg xorg-fonts xorg-server-xwayland mesa-dri xf86-video-intel plasma-wayland-protocols qt5-wayland -y
+            xbps-install kde5-baseapps ark \
+                xorg-minimal xdg-user-dirs xorg xorg-fonts xorg-server-xwayland \
+                mesa-dri xf86-video-intel plasma-wayland-protocols \
+                qt5-wayland qt6-wayland -y
             echo -e "----------------------------------------${NORMAL}"
         fi
 
@@ -120,7 +150,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
         if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
             echo -e "${LBLUE}Alright, I'll install base kde apps${NORMAL}"
             echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install -y plasma-disks plasma-firewall  plasma-systemmonitor 
+            xbps-install -y plasma-disks plasma-firewall plasma-systemmonitor
             echo -e "----------------------------------------${NORMAL}"
         fi
 
@@ -133,13 +163,13 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
             ln -s /etc/sv/ntpd /var/service
             ln -s /etc/sv/sddm /etc/runit/runsvdir/default
             echo -e "----------------------------------------${NORMAL}"
-        else 
+        else
 
             echo -e "${LYELLOW}If you want to install another DM, you can enter the exact package name (or enter 'NO' for skip)"
             echo -e "You can find your DM by 'xbps-query -Rs <pkg name>' ;)${NORMAL}"
             read
 
-            if [[ $REPLY != "NO" ]]; then
+            if [[ $REPLY != "NO" || $REPLY != "n" || $REPLY != "N" || $REPLY != "No" || $REPLY != "no" ]]; then
                 echo -e "${LBLUE}So, I'll install ${REPLY} ${NORMAL}"
                 echo -e "${LMAGENTA}----------------------------------------"
                 xbps-install $REPLY -y
@@ -171,7 +201,6 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
         else
             echo -e "${RED}I don't know what is it :(${NORMAL}"
-
         fi
 
         echo -e "${YELLOW}Do you want to install gdm? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
@@ -188,7 +217,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
             echo -e "You can find your DM by 'xbps-query -Rs <pkg name>' ;)${NORMAL}"
             read
 
-            if [[ $REPLY != "NO" ]]; then
+            if [[ $REPLY != "NO" || $REPLY != "n" || $REPLY != "N" || $REPLY != "No" || $REPLY != "no" ]]; then
                 echo -e "${LBLUE}So, I'll install ${REPLY} ${NORMAL}"
                 echo -e "${LMAGENTA}----------------------------------------"
                 xbps-install $REPLY -y
@@ -200,24 +229,45 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
     #XFCE4
     #========================================================
-    elif [[ $REPLY = xfce4 ]]; then
+    elif [[ $REPLY = "xfce4" ]]; then
         echo -e "\n${LBLUE}Now I'll install XFCE for you :3${NORMAL}\n"
 
-        echo -e "${LYELLOW}If you want to install any DM, you can enter the exact package name (or enter 'NO' for skip)"
-        echo -e "You can find your DM by 'xbps-query -Rs <pkg name>' ;)${NORMAL}"
+        echo -e "${YELLOW}Do you want to install lyDM? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
         read
 
-        if [[ $REPLY != "NO" ]]; then
-            echo -e "${LBLUE}So, I'll install ${REPLY} ${NORMAL}"
+        if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+            echo -e "${LBLUE}Alright, I'll install ly display manager${NORMAL}"
             echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install $REPLY -y
-            ln -s /etc/sv/$REPLY /etc/runit/runsvdir/default/
+            xbps-install git zig libxcb-devel pam-devel cmatrix -y
+
+            git clone https://github.com/fairyglade/ly
+            cd ly
+            zig build
+            zig build installrunit
+
+            ln -s /etc/sv/ly /etc/runit/runsvdir/default/
+            rm /var/service/agetty-tty2
             echo -e "----------------------------------------${NORMAL}"
+        else
+            echo -e "${LYELLOW}If you want to install any DM, you can enter the exact package name (or enter 'NO' for skip)"
+            echo -e "You can find your DM by 'xbps-query -Rs <pkg name>' ;)${NORMAL}"
+            read
+
+            if [[ $REPLY != "NO" || $REPLY != "n" || $REPLY != "N" || $REPLY != "No" || $REPLY != "no" ]]; then
+                echo -e "${LBLUE}So, I'll install ${REPLY} ${NORMAL}"
+                echo -e "${LMAGENTA}----------------------------------------"
+                xbps-install $REPLY -y
+                ln -s /etc/sv/$REPLY /etc/runit/runsvdir/default/
+                echo -e "----------------------------------------${NORMAL}"
+            fi
         fi
 
         echo -e "${LBLUE}And finally I'll install XFCE(pkg)${NORMAL}"
         echo -e "${LMAGENTA}----------------------------------------"
-        xbps-install xfce4 xfce4-whiskermenu-plugin xfce4-clipman-plugin xfce4-pulseaudio-plugin network-manager-applet engrampa gvfs lightdm-gtk3-greeter thunar-archive-plugin thunar-media-tags-plugin xorg-minimal xdg-user-dirs xorg xorg-fonts mesa-dri -y
+        xbps-install xfce4 xfce4-whiskermenu-plugin xfce4-clipman-plugin xfce4-pulseaudio-plugin network-manager-applet \
+            engrampa gvfs thunar-archive-plugin thunar-media-tags-plugin \
+            xorg-minimal xdg-user-dirs xorg xorg-fonts mesa-dri \
+            papirus-icon-theme -y
         echo -e "----------------------------------------${NORMAL}"
 
     #========================================================
@@ -322,7 +372,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
         echo -e "${LBLUE}Now I'll install OPENBOX(pkg)"
         echo -e "${LMAGENTA}----------------------------------------"
-        xbps-install openbox xorg-minimal xdg-user-dirs xdg-desktop-portal-gtk xdg-utils xorg xorg-fonts xfce4-terminal obconf obmenu-generator	 pcmanfm nitrogen tint2 -y
+        xbps-install openbox xorg-minimal xdg-user-dirs xdg-desktop-portal-gtk xdg-utils xorg xorg-fonts xfce4-terminal obconf obmenu-generator pcmanfm nitrogen tint2 -y
         echo -e "----------------------------------------${NORMAL}"
 
         echo -e "${YELLOW}Do you want to install lxdm? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
@@ -350,12 +400,9 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
         fi
 
         echo -e "${LBLUE}Please run ./wm/openbox/theme.sh"
-
     #========================================================
-
-
     else
-        echo -e "${RED} I don't know what is it :("
+        echo -e "${RED} I don't know what is it :( and Skip"
     fi
 fi
 #========================================================
@@ -370,12 +417,12 @@ fi
 #     echo -e "${LMAGENTA}----------------------------------------"
 #     xbps-install pulseaudio -y
 #     echo -e "----------------------------------------${NORMAL}"
-# else 
+# else
 #     echo -e "${LBLUE}So, you'll be without any sound${NORMAL}"
 # fi
 # #========================================================
 
-#pulseaudio
+#Pipewire
 #========================================================
 echo -e "${YELLOW}Do you want to install pipewire? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
 read
@@ -383,53 +430,43 @@ read
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LBLUE}Now I'll install pipewire for you${NORMAL}"
     echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install -y alsa-utils alsa-firmware alsa-pipewire apulse bluez-alsa ffmpeg alsa-plugins-ffmpeg pipewire pavucontrol
+    xbps-install -y alsa-utils alsa-firmware alsa-pipewire apulse bluez-alsa ffmpeg alsa-plugins-ffmpeg pipewire wireplumber pavucontrol
     ln -s /usr/share/applications/pipewire.desktop /etc/xdg/autostart/pipewire.desktop
+    ln -s /usr/share/applications/wireplumber.desktop /etc/xdg/autostart/wireplumber.desktop
     ln -s /usr/share/applications/pipewire-pulse.desktop /etc/xdg/autostart/pipewire-pulse.desktop
     mkdir -p /etc/alsa/conf.d
     ln -s /usr/share/alsa/alsa.conf.d/50-pipewire.conf /etc/alsa/conf.d
     ln -s /usr/share/alsa/alsa.conf.d/99-pipewire-default.conf /etc/alsa/conf.d
     ln -s /etc/sv/alsa /var/service
     echo -e "----------------------------------------${NORMAL}"
-else 
+else
     echo -e "${LBLUE}So, you'll be without any sound${NORMAL}"
 fi
 #========================================================
 
-#multilib repo 
+# VM
 #========================================================
-echo -e "${YELLOW}Do you want to install multilib repo? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+echo -e "${YELLOW}Do you install void on VM? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
 read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+    echo -e "${LBLUE}Now I'll install VM Deps for you${NORMAL}"
     echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install void-repo-multilib -y 
-    xbps-install -Syu
+    xbps-install virtualbox-ose-guest xf86-video-intel xf86-video-vmware -y
     echo -e "----------------------------------------${NORMAL}"
+else
+    echo -e "${LBLUE}No VM stuff installed ${NORMAL}"
 fi
 #========================================================
 
-#nonfree repo 
-#========================================================
-echo -e "${YELLOW}Do you want to install nonfree repo? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
-read
-
-if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
-    echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install void-repo-nonfree -y 
-    xbps-install -Syu
-    echo -e "----------------------------------------${NORMAL}"
-fi
-#========================================================
-
-#APPS 
+#APPS
 #========================================================
 echo -e "${YELLOW}Do you want to install apps? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
 read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install -y firefox vlc ntfs-3g nano noto-fonts-cjk flatpak bleachbit ufw zip xz unzip unrar p7zip xtools 
+    xbps-install -y firefox vlc mpv nano noto-fonts-cjk flatpak ufw zip xz unzip unrar p7zip xtools
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     echo -e "----------------------------------------${NORMAL}"
 
@@ -477,11 +514,16 @@ fi
 
 #Auto-delete Installation script
 #========================================================
-echo -e "${LBLUE}Auto-delete Installation script :)${NORMAL}"
-echo -e "${LMAGENTA}----------------------------------------"
-rm -r /${PWD}
-echo -e "----------------------------------------${NORMAL}"
-#========================================================
+echo -e "${YELLOW}Do you want to install my 'service' script? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+read
 
-#The end
-echo -e "${LYELLOW}Thank you for using my installation script :3${NORMAL}"
+if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+    echo -e "${LBLUE}Auto-delete Installation script :)${NORMAL}"
+    echo -e "${LMAGENTA}----------------------------------------"
+    rm -r /${PWD}
+    echo -e "----------------------------------------${NORMAL}"
+#========================================================
+else
+    #The end
+    echo -e "${LYELLOW}Thank you for using my installation script :3${NORMAL}"
+fi

@@ -247,6 +247,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
             ln -s /etc/sv/ly /etc/runit/runsvdir/default/
             rm /var/service/agetty-tty2
+            cd ..
             echo -e "----------------------------------------${NORMAL}"
         else
             echo -e "${LYELLOW}If you want to install any DM, you can enter the exact package name (or enter 'NO' for skip)"
@@ -407,30 +408,18 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 fi
 #========================================================
 
-# #pulseaudio
-# #========================================================
-# echo -e "${YELLOW}Do you want to install pulseaudio? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
-# read
-
-# if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
-#     echo -e "${LBLUE}Now I'll install pulseaudio for you${NORMAL}"
-#     echo -e "${LMAGENTA}----------------------------------------"
-#     xbps-install pulseaudio -y
-#     echo -e "----------------------------------------${NORMAL}"
-# else
-#     echo -e "${LBLUE}So, you'll be without any sound${NORMAL}"
-# fi
-# #========================================================
-
 #Pipewire
 #========================================================
-echo -e "${YELLOW}Do you want to install pipewire? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+echo -e "${YELLOW}Do you want to install pipewire? No if u want pulseaudio ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
 read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LBLUE}Now I'll install pipewire for you${NORMAL}"
     echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install -y alsa-utils alsa-firmware alsa-pipewire apulse bluez-alsa ffmpeg alsa-plugins-ffmpeg pipewire wireplumber pavucontrol
+    xbps-install -y alsa-utils alsa-firmware alsa-pipewire apulse bluez-alsa \
+                    ffmpeg alsa-plugins-ffmpeg \
+                    pipewire wireplumber \
+                    pavucontrol
     ln -s /usr/share/applications/pipewire.desktop /etc/xdg/autostart/pipewire.desktop
     ln -s /usr/share/applications/wireplumber.desktop /etc/xdg/autostart/wireplumber.desktop
     ln -s /usr/share/applications/pipewire-pulse.desktop /etc/xdg/autostart/pipewire-pulse.desktop
@@ -440,7 +429,9 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
     ln -s /etc/sv/alsa /var/service
     echo -e "----------------------------------------${NORMAL}"
 else
-    echo -e "${LBLUE}So, you'll be without any sound${NORMAL}"
+    echo -e "${LBLUE}Now I'll install pulseaudio for you${NORMAL}"
+    echo -e "${LMAGENTA}----------------------------------------"
+    xbps-install pulseaudio alsa-plugins-pulseaudio -y
 fi
 #========================================================
 
@@ -452,7 +443,8 @@ read
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LBLUE}Now I'll install VM Deps for you${NORMAL}"
     echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install virtualbox-ose-guest xf86-video-intel xf86-video-vmware -y
+    xbps-install linux-headers virtualbox-ose-guest xf86-video-intel xf86-video-vmware -y
+    ln -s /etc/sv/vboxservice /var/service
     echo -e "----------------------------------------${NORMAL}"
 else
     echo -e "${LBLUE}No VM stuff installed ${NORMAL}"
@@ -461,16 +453,22 @@ fi
 
 #APPS
 #========================================================
-echo -e "${YELLOW}Do you want to install apps? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+echo -e "${YELLOW}Do you want to install apps (like browser/media player/firewall/flatpak)? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
 read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install -y firefox vlc mpv nano noto-fonts-cjk flatpak ufw zip xz unzip unrar p7zip xtools
+    xbps-install -y firefox \
+                    vlc \
+                    mpv \
+                    nano noto-fonts-cjk \
+                    flatpak \
+                    ufw gufw ufw-extras \
+                    zip xz unzip unrar p7zip xtools
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     echo -e "----------------------------------------${NORMAL}"
 
-    echo -e "${YELLOW}Do you want to put ufw in autorun? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+    echo -e "${YELLOW}Do you want to put ufw(firewall) in autorun? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
     read
 
     if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
@@ -483,7 +481,7 @@ fi
 
 #NetworkManager
 #========================================================
-echo -e "${YELLOW}Do you want to install NetworkManager? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+echo -e "${YELLOW}Do you want to install NetworkManager? (RECOMENDED IF USING DE) ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
 read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
@@ -505,7 +503,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
     echo -e "${LBLUE}This script will help you in the future${NORMAL}"
     echo -e "${LMAGENTA}----------------------------------------"
     echo "Installation"
-    cp /${PWD}/service /usr/bin
+    cp -v /${PWD}/service /usr/bin
     echo -e "----------------------------------------${NORMAL}"
 else
     echo -e "${LBLUE}So sad${NORMAL}"
@@ -520,7 +518,7 @@ read
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LBLUE}Auto-delete Installation script :)${NORMAL}"
     echo -e "${LMAGENTA}----------------------------------------"
-    rm -r /${PWD}
+    rm -rv /${PWD}
     echo -e "----------------------------------------${NORMAL}"
 #========================================================
 else

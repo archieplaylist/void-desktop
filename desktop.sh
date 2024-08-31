@@ -26,7 +26,7 @@ echo -e "${YELLOW}Did you install your system via chroot? ${NORMAL}[${GREEN}N${N
 read
 if [[ $REPLY = "no" || $REPLY = "n" || $REPLY = "N" || $REPLY = "No" || $REPLY = "" || $REPLY = " " ]]; then
 
-    echo -e "${YELLOW}Do you want to update your xbps? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+    echo -e "${YELLOW}Do you want to update your xbps and update system? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
     read
 
     if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
@@ -34,7 +34,7 @@ if [[ $REPLY = "no" || $REPLY = "n" || $REPLY = "N" || $REPLY = "No" || $REPLY =
         echo -e "${LMAGENTA}----------------------------------------"
         xbps-install -Suy
         xbps-install -yu xbps
-        xbps-install git curl wget -y
+        xbps-install git curl wget xtools -y
         echo -e "----------------------------------------${NORMAL}"
     fi
 fi
@@ -138,19 +138,12 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
             echo -e "${LBLUE}Alright, I'll install base kde apps${NORMAL}"
             echo -e "${LMAGENTA}----------------------------------------"
             xbps-install kde5-baseapps ark \
-                xorg-minimal xdg-user-dirs xorg xorg-fonts xorg-server-xwayland \
-                mesa-dri xf86-video-intel plasma-wayland-protocols \
-                qt5-wayland qt6-wayland -y
-            echo -e "----------------------------------------${NORMAL}"
-        fi
-
-        echo -e "${YELLOW}Do you want to install other KDE APPS? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
-        read
-
-        if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
-            echo -e "${LBLUE}Alright, I'll install base kde apps${NORMAL}"
-            echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install -y plasma-disks plasma-firewall plasma-systemmonitor
+                            plasma-disks plasma-firewall plasma-systemmonitor \
+                            kdegraphics-thumbnailers ffmpegthumbs \
+                            xorg-minimal xdg-user-dirs xdg-desktop-portal-kde \
+                            xorg xorg-fonts xorg-server-xwayland \
+                            mesa-dri xf86-video-intel plasma-wayland-protocols \
+                            qt5-wayland qt6-wayland -y
             echo -e "----------------------------------------${NORMAL}"
         fi
 
@@ -190,13 +183,17 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
         if [[ $REPLY = "gnome" ]]; then
             echo -e "${LBLUE}I'll install gnome${NORMAL}"
             echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install gnome -y
+            xbps-install gnome gnome-browser-connector -y
+            xbps-install xdg-desktop-portal xdg-dektop-portal-gnome \
+                            xdg-user-dirs xdg-user-dirs-gtk xdg-utils
             echo -e "----------------------------------------${NORMAL}"
 
         elif [[ $REPLY = "gnome-core" ]]; then
             echo -e "${LBLUE}I'll install minimal gnome DE${NORMAL}"
             echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install gnome-core -y
+            xbps-install gnome-core gnome-browser-connector -y
+            xbps-install xdg-desktop-portal xdg-dektop-portal-gnome \
+                            xdg-user-dirs xdg-user-dirs-gtk xdg-utils
             echo -e "----------------------------------------${NORMAL}"
 
         else
@@ -230,7 +227,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
     #XFCE4
     #========================================================
     elif [[ $REPLY = "xfce4" ]]; then
-        echo -e "\n${LBLUE}Now I'll install XFCE for you :3${NORMAL}\n"
+        echo -e "\n${LBLUE}Now I'll install DM and XFCE for you :3${NORMAL}\n"
 
         echo -e "${YELLOW}Do you want to install lyDM? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
         read
@@ -250,7 +247,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
             cd ..
             echo -e "----------------------------------------${NORMAL}"
         else
-            echo -e "${LYELLOW}If you want to install any DM, you can enter the exact package name (or enter 'NO' for skip)"
+            echo -e "${LYELLOW}If you want to install any DM if LyDM doesn't installed, you can enter the exact package name (or enter 'NO' for skip)"
             echo -e "You can find your DM by 'xbps-query -Rs <pkg name>' ;)${NORMAL}"
             read
 
@@ -278,16 +275,35 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
     elif [[ $REPLY = "mate" ]]; then
         echo -e "\n${LBLUE}Alright, I'll install Mate for you :3${NORMAL}\n"
 
-        echo -e "${LYELLOW}If you want to install any DM, you can enter the exact package name (or enter 'NO' for skip)"
-        echo -e "You can find your DM by 'xbps-query -Rs <pkg name>' ;)${NORMAL}"
+        echo -e "${YELLOW}Do you want to install lyDM? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
         read
 
-        if [[ $REPLY != "NO" ]]; then
-            echo -e "${LBLUE}So, I'll install ${REPLY} ${NORMAL}"
+        if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+            echo -e "${LBLUE}Alright, I'll install ly display manager${NORMAL}"
             echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install $REPLY -y
-            ln -s /etc/sv/$REPLY /etc/runit/runsvdir/default/
+            xbps-install git zig libxcb-devel pam-devel cmatrix -y
+
+            git clone https://github.com/fairyglade/ly
+            cd ly
+            zig build
+            zig build installrunit
+
+            ln -s /etc/sv/ly /etc/runit/runsvdir/default/
+            rm /var/service/agetty-tty2
+            cd ..
             echo -e "----------------------------------------${NORMAL}"
+        else
+            echo -e "${LYELLOW}If you want to install any DM if LyDM doesn't installed, you can enter the exact package name (or enter 'NO' for skip)"
+            echo -e "You can find your DM by 'xbps-query -Rs <pkg name>' ;)${NORMAL}"
+            read
+
+            if [[ $REPLY != "NO" || $REPLY != "n" || $REPLY != "N" || $REPLY != "No" || $REPLY != "no" ]]; then
+                echo -e "${LBLUE}So, I'll install ${REPLY} ${NORMAL}"
+                echo -e "${LMAGENTA}----------------------------------------"
+                xbps-install $REPLY -y
+                ln -s /etc/sv/$REPLY /etc/runit/runsvdir/default/
+                echo -e "----------------------------------------${NORMAL}"
+            fi
         fi
 
         echo -e "${LBLUE}Now I'll install Mate(pkg)"
@@ -325,7 +341,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
         fi
 
-        echo -e "${LBLUE}Now I'll install LXDM(pkg)"
+        echo -e "${LBLUE}Now I'll install LXDE(pkg)"
         echo -e "${LMAGENTA}----------------------------------------"
         xbps-install lxde -y
         echo -e "----------------------------------------${NORMAL}"
@@ -408,9 +424,24 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 fi
 #========================================================
 
+# NVIDIA
+#========================================================
+echo -e "${YELLOW}Do you have NVIDIA GPU? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+read
+
+if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+    echo -e "${LBLUE}Now I'll install NVIDIA driver for you${NORMAL}"
+    echo -e "${LMAGENTA}----------------------------------------"
+    xbps-install nvidia -y
+    echo -e "----------------------------------------${NORMAL}"
+else
+    echo -e "${LBLUE}No NVIDIA stuff installed ${NORMAL}"
+fi
+#========================================================
+
 #Pipewire
 #========================================================
-echo -e "${YELLOW}Do you want to install pipewire? No if u want pulseaudio ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+echo -e "${YELLOW}Do you want to install pipewire? 'No/n/N/no' if u want pulseaudio ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
 read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
@@ -451,20 +482,45 @@ else
 fi
 #========================================================
 
+# LAPTOP
+#========================================================
+echo -e "${YELLOW}Do you install void on LAPTOP? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+read
+
+if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+    echo -e "${LBLUE}Now I'll install LAPTOP Deps for you${NORMAL}"
+    echo -e "${LMAGENTA}----------------------------------------"
+    xbps-install cronie chrony tlp tlp-rdw powertop -y
+    ln -s /etc/sv/cronie /var/service
+    ln -s /etc/sv/chronyd /var/service
+    ln -s /etc/sv/tlp /var/service
+    echo -e "----------------------------------------${NORMAL}"
+else
+    echo -e "${LBLUE}No LAPTOP stuff installed ${NORMAL}"
+fi
+#========================================================
+
 #APPS
 #========================================================
-echo -e "${YELLOW}Do you want to install apps (like browser/media player/firewall/flatpak)? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+echo -e "${YELLOW}Do you want to install essential apps (RECOMMENDED) (like browser/media player/firewall/flatpak)? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
 read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LMAGENTA}----------------------------------------"
+    xbps-install void-repo-nonfree void-repo-multilib-nonfree -y
+    xbps-install -Syu
     xbps-install -y firefox \
                     vlc \
                     mpv \
-                    nano noto-fonts-cjk \
+                    nano \
+                    noto-fonts-ttf noto-fonts-ttf-extra noto-fonts-cjk \
+                    font-firacode font-fira-ttf \
+                    font-awesome \
+                    dejavu-fonts-ttf \
+                    ttf-ubuntu-font-family \
                     flatpak \
                     ufw gufw ufw-extras \
-                    zip xz unzip unrar p7zip xtools
+                    zip xz unzip unrar p7zip xtools 
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     echo -e "----------------------------------------${NORMAL}"
 
@@ -476,6 +532,27 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
         ln -s /etc/sv/ufw /var/service/
         echo -e "----------------------------------------${NORMAL}"
     fi
+fi
+#========================================================
+
+# Printer Support
+#========================================================
+echo -e "${YELLOW}Do you want printer support? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+read
+
+if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+    echo -e "${LBLUE}Now I'll install Printer Deps for you${NORMAL}"
+    echo -e "${LMAGENTA}----------------------------------------"
+    xbps-install cups cups-pk-helper cups-filters \
+                    foomatic-db foomatic-db-nonfree foomatic-db-engine \
+                    guteprint hplip \
+                    epson-inkjet-printer-escpr \
+                    cnijfilter2 -y
+    ln -s /etc/sv/cupsd /var/service
+
+    echo -e "----------------------------------------${NORMAL}"
+else
+    echo -e "${LBLUE}No Printer stuff installed ${NORMAL}"
 fi
 #========================================================
 
@@ -510,9 +587,9 @@ else
 fi
 #========================================================
 
-#Auto-delete Installation script
+#Delete Installation script
 #========================================================
-echo -e "${YELLOW}Do you want to install my 'service' script? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+echo -e "${YELLOW}Do you want to delete Installation script? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
 read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then

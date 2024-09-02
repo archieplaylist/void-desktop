@@ -571,6 +571,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
                     vlc \
                     mpv \
                     nano \
+                    htop \
                     noto-fonts-ttf noto-fonts-ttf-extra noto-fonts-cjk \
                     font-firacode font-fira-ttf \
                     font-awesome \

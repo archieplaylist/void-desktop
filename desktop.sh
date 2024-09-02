@@ -140,7 +140,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
             xbps-install kde5-baseapps ark \
                             plasma-disks plasma-firewall plasma-systemmonitor \
                             kdegraphics-thumbnailers ffmpegthumbs \
-                            xorg-minimal xdg-user-dirs xdg-desktop-portal-kde \
+                            xdg-user-dirs xdg-desktop-portal-kde \
                             xorg xorg-fonts xorg-server-xwayland \
                             mesa-dri xf86-video-intel plasma-wayland-protocols \
                             qt5-wayland qt6-wayland -y
@@ -264,7 +264,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
         echo -e "${LMAGENTA}----------------------------------------"
         xbps-install xfce4 xfce4-whiskermenu-plugin xfce4-clipman-plugin xfce4-pulseaudio-plugin network-manager-applet \
             engrampa gvfs thunar-archive-plugin thunar-media-tags-plugin \
-            xorg-minimal xdg-user-dirs xorg xorg-fonts mesa-dri \
+            xdg-user-dirs xorg xorg-fonts mesa-dri \
             papirus-icon-theme -y
         echo -e "----------------------------------------${NORMAL}"
 
@@ -310,7 +310,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
         echo -e "${LMAGENTA}----------------------------------------"
         xbps-install cinnamon-all gnome-terminal network-manager-applet \
             engrampa gvfs \
-            xorg-minimal xdg-user-dirs xorg xorg-fonts mesa-dri \
+            xdg-user-dirs xorg xorg-fonts mesa-dri \
             papirus-icon-theme -y
         echo -e "----------------------------------------${NORMAL}"
 

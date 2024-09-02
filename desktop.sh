@@ -591,7 +591,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
     echo -e "${LMAGENTA}----------------------------------------"
     xbps-install cups cups-pk-helper cups-filters \
                     foomatic-db foomatic-db-nonfree foomatic-db-engine \
-                    guteprint hplip \
+                    gutenprint hplip \
                     epson-inkjet-printer-escpr \
                     cnijfilter2 -y
     ln -s /etc/sv/cupsd /var/service

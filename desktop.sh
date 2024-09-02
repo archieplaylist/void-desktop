@@ -119,7 +119,7 @@ read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
 
-    echo -e "${YELLOW}Which DE you want to install ${LMAGENTA}(plasma, gnome, xfce4, mate, lxde, lxqt, openbox)${NORMAL}${YELLOW}?${NORMAL}"
+    echo -e "${YELLOW}Which DE you want to install ${LMAGENTA}(plasma, gnome, xfce4, cinnamon, mate, lxde, lxqt, openbox)${NORMAL}${YELLOW}?${NORMAL}"
     read
 
     #PLASMA
@@ -264,6 +264,52 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
         echo -e "${LMAGENTA}----------------------------------------"
         xbps-install xfce4 xfce4-whiskermenu-plugin xfce4-clipman-plugin xfce4-pulseaudio-plugin network-manager-applet \
             engrampa gvfs thunar-archive-plugin thunar-media-tags-plugin \
+            xorg-minimal xdg-user-dirs xorg xorg-fonts mesa-dri \
+            papirus-icon-theme -y
+        echo -e "----------------------------------------${NORMAL}"
+
+    #========================================================
+
+    #CINNAMON
+    #========================================================
+    elif [[ $REPLY = "cinnamon" ]]; then
+        echo -e "\n${LBLUE}Now I'll install DM and CINNAMON for you :3${NORMAL}\n"
+
+        echo -e "${YELLOW}Do you want to install lyDM? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+        read
+
+        if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+            echo -e "${LBLUE}Alright, I'll install ly display manager${NORMAL}"
+            echo -e "${LMAGENTA}----------------------------------------"
+            xbps-install git zig libxcb-devel pam-devel cmatrix -y
+
+            git clone https://github.com/fairyglade/ly
+            cd ly
+            zig build
+            zig build installrunit
+
+            ln -s /etc/sv/ly /etc/runit/runsvdir/default/
+            rm /var/service/agetty-tty2
+            cd ..
+            echo -e "----------------------------------------${NORMAL}"
+        else
+            echo -e "${LYELLOW}If you want to install any DM if LyDM doesn't installed, you can enter the exact package name (or enter 'NO' for skip)"
+            echo -e "You can find your DM by 'xbps-query -Rs <pkg name>' ;)${NORMAL}"
+            read
+
+            if [[ $REPLY != "NO" || $REPLY != "n" || $REPLY != "N" || $REPLY != "No" || $REPLY != "no" ]]; then
+                echo -e "${LBLUE}So, I'll install ${REPLY} ${NORMAL}"
+                echo -e "${LMAGENTA}----------------------------------------"
+                xbps-install $REPLY -y
+                ln -s /etc/sv/$REPLY /etc/runit/runsvdir/default/
+                echo -e "----------------------------------------${NORMAL}"
+            fi
+        fi
+
+        echo -e "${LBLUE}And finally I'll install XFCE(pkg)${NORMAL}"
+        echo -e "${LMAGENTA}----------------------------------------"
+        xbps-install cinnamon-all network-manager-applet \
+            engrampa gvfs \
             xorg-minimal xdg-user-dirs xorg xorg-fonts mesa-dri \
             papirus-icon-theme -y
         echo -e "----------------------------------------${NORMAL}"

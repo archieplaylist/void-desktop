@@ -34,7 +34,7 @@ if [[ $REPLY = "no" || $REPLY = "n" || $REPLY = "N" || $REPLY = "No" || $REPLY =
         echo -e "${LMAGENTA}----------------------------------------"
         xbps-install -Suy
         xbps-install -yu xbps
-        xbps-install git curl wget xtools -y
+        xbps-install git curl wget bash-completion xtools -y
         echo -e "----------------------------------------${NORMAL}"
     fi
 fi
@@ -308,7 +308,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
         echo -e "${LBLUE}And finally I'll install XFCE(pkg)${NORMAL}"
         echo -e "${LMAGENTA}----------------------------------------"
-        xbps-install cinnamon-all network-manager-applet \
+        xbps-install cinnamon-all gnome-terminal network-manager-applet \
             engrampa gvfs \
             xorg-minimal xdg-user-dirs xorg xorg-fonts mesa-dri \
             papirus-icon-theme -y
@@ -518,11 +518,23 @@ echo -e "${YELLOW}Do you install void on VM? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}
 read
 
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
-    echo -e "${LBLUE}Now I'll install VM Deps for you${NORMAL}"
-    echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install linux-headers virtualbox-ose-guest xf86-video-intel xf86-video-vmware -y
-    ln -s /etc/sv/vboxservice /var/service
-    echo -e "----------------------------------------${NORMAL}"
+    
+    echo -e "${YELLOW}VirtualBox? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+    read
+
+    if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
+        echo -e "${LBLUE}Now I'll install VBOX Deps for you${NORMAL}"
+        echo -e "${LMAGENTA}----------------------------------------"
+        xbps-install linux-headers virtualbox-ose-guest xf86-video-vmware -y
+        ln -s /etc/sv/vboxservice /var/service
+        echo -e "----------------------------------------${NORMAL}"
+    else
+        echo -e "${LBLUE}Now I'll install QEMU/LIBVIRT Deps for you${NORMAL}"
+        echo -e "${LMAGENTA}----------------------------------------"
+        xbps-install qemu-ga -y
+        ln -s /etc/sv/vboxservice /var/service
+        echo -e "----------------------------------------${NORMAL}"
+    fi
 else
     echo -e "${LBLUE}No VM stuff installed ${NORMAL}"
 fi
@@ -566,7 +578,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
                     ttf-ubuntu-font-family \
                     flatpak \
                     ufw gufw ufw-extras \
-                    zip xz unzip unrar p7zip xtools 
+                    zip xz unzip unrar p7zip binutils
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     echo -e "----------------------------------------${NORMAL}"
 

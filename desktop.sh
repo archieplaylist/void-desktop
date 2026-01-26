@@ -568,17 +568,18 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
     xbps-install void-repo-nonfree void-repo-multilib-nonfree -y
     xbps-install -Syu
     xbps-install -y firefox \
-                    vlc \
-                    mpv \
-                    nano \
-                    htop \
-                    noto-fonts-ttf noto-fonts-ttf-extra noto-fonts-cjk \
+                    flatpak \
+                    dejavu-fonts-ttf \
                     font-firacode font-fira-ttf \
                     font-awesome \
-                    dejavu-fonts-ttf \
+                    htop \
+                    mpv \
+                    nano \
+                    noto-fonts-ttf noto-fonts-ttf-extra noto-fonts-cjk \
+                    steam gamescope \
                     ttf-ubuntu-font-family \
-                    flatpak \
                     ufw gufw ufw-extras \
+                    vlc \
                     zip xz unzip unrar p7zip binutils
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     echo -e "----------------------------------------${NORMAL}"

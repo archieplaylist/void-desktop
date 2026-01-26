@@ -128,16 +128,16 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
         echo -e "\n${LBLUE}So, I'll install KDE for you :3${NORMAL}"
         echo -e "${LMAGENTA}----------------------------------------"
-        xbps-install kde5 -y
+        xbps-install kde-plasma -y
         echo -e "----------------------------------------${NORMAL}"
 
-        echo -e "${YELLOW}Do you want to install kde5-baseapps? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
+        echo -e "${YELLOW}Do you want to install kde-baseapps? ${NORMAL}[${GREEN}Y${NORMAL}/${RED}n${NORMAL}]"
         read
 
         if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
             echo -e "${LBLUE}Alright, I'll install base kde apps${NORMAL}"
             echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install kde5-baseapps ark \
+            xbps-install kde-baseapps ark \
                             plasma-disks plasma-firewall plasma-systemmonitor \
                             kdegraphics-thumbnailers ffmpegthumbs \
                             xdg-user-dirs xdg-desktop-portal-kde \
@@ -152,7 +152,7 @@ if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY
 
         if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
             echo -e "${LMAGENTA}----------------------------------------"
-            xbps-install -y sddm ntp
+            xbps-install -y sddm sddm-kcm ntp
             ln -s /etc/sv/ntpd /var/service
             ln -s /etc/sv/sddm /etc/runit/runsvdir/default
             echo -e "----------------------------------------${NORMAL}"

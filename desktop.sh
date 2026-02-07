@@ -493,17 +493,19 @@ read
 if [[ $REPLY = "yes" || $REPLY = "y" || $REPLY = "Y" || $REPLY = "Yes" || $REPLY = " " || $REPLY = "" ]]; then
     echo -e "${LBLUE}Now I'll install pipewire for you${NORMAL}"
     echo -e "${LMAGENTA}----------------------------------------"
-    xbps-install -y alsa-utils alsa-firmware alsa-pipewire apulse bluez-alsa \
+    xbps-install -y alsa-utils alsa-firmware alsa-pipewire libspa-bluetooth pipewire-pulse \
                     ffmpeg alsa-plugins-ffmpeg \
                     pipewire wireplumber \
                     pavucontrol
     ln -s /usr/share/applications/pipewire.desktop /etc/xdg/autostart/pipewire.desktop
     ln -s /usr/share/applications/wireplumber.desktop /etc/xdg/autostart/wireplumber.desktop
     ln -s /usr/share/applications/pipewire-pulse.desktop /etc/xdg/autostart/pipewire-pulse.desktop
-    mkdir -p /etc/alsa/conf.d
-    ln -s /usr/share/alsa/alsa.conf.d/50-pipewire.conf /etc/alsa/conf.d
-    ln -s /usr/share/alsa/alsa.conf.d/99-pipewire-default.conf /etc/alsa/conf.d
-    ln -s /etc/sv/alsa /var/service
+
+    ln -s /etc/sv/bluetoothd /var/service
+    # mkdir -p /etc/alsa/conf.d
+    # ln -s /usr/share/alsa/alsa.conf.d/50-pipewire.conf /etc/alsa/conf.d
+    # ln -s /usr/share/alsa/alsa.conf.d/99-pipewire-default.conf /etc/alsa/conf.d
+    # ln -s /etc/sv/alsa /var/service
     echo -e "----------------------------------------${NORMAL}"
 else
     echo -e "${LBLUE}Now I'll install pulseaudio for you${NORMAL}"
